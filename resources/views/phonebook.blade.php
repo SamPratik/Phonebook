@@ -9,6 +9,7 @@
 
     <div id="app">
       <Navbar></Navbar>
+      <router-view></router-view>
       <app-footer></app-footer>
     </div>
 
