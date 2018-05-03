@@ -16,7 +16,13 @@ window.Vue = require('vue');
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+var Navbar = require('./components/Navbar.vue');
+var Footer = require('./components/Footer.vue');
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    components: {
+      Navbar,
+      'app-footer': Footer
+    }
 });
