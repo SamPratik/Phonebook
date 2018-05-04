@@ -11,44 +11,12 @@
         </div>
         <div class="">
           <ul class="list-group">
-            <li class="list-group-item">
-              Cras justo odio
+            <li class="list-group-item" v-for="item, key in lists">
+              {{item.name}}
               <span class="pull-right">
                 <i style="margin-right:20px;" class="fa fa-trash text-danger" aria-hidden="true"></i>
                 <i style="margin-right:20px;" class="fa fa-edit text-warning"></i>
-                <i class="fa fa-eye text-primary"></i>
-              </span>
-            </li>
-            <li class="list-group-item">
-              Dapibus ac facilisis in
-              <span class="pull-right">
-                <i style="margin-right:20px;" class="fa fa-trash text-danger" aria-hidden="true"></i>
-                <i style="margin-right:20px;" class="fa fa-edit text-warning"></i>
-                <i class="fa fa-eye text-primary"></i>
-              </span>
-            </li>
-            <li class="list-group-item">
-              Morbi leo risus
-              <span class="pull-right">
-                <i style="margin-right:20px;" class="fa fa-trash text-danger" aria-hidden="true"></i>
-                <i style="margin-right:20px;" class="fa fa-edit text-warning"></i>
-                <i class="fa fa-eye text-primary"></i>
-              </span>
-            </li>
-            <li class="list-group-item">
-              Porta ac consectetur ac
-              <span class="pull-right">
-                <i style="margin-right:20px;" class="fa fa-trash text-danger" aria-hidden="true"></i>
-                <i style="margin-right:20px;" class="fa fa-edit text-warning"></i>
-                <i class="fa fa-eye text-primary"></i>
-              </span>
-            </li>
-            <li class="list-group-item">
-              Vestibulum at eros
-              <span class="pull-right">
-                <i style="margin-right:20px;" class="fa fa-trash text-danger" aria-hidden="true"></i>
-                <i style="margin-right:20px;" class="fa fa-edit text-warning"></i>
-                <i class="fa fa-eye text-primary"></i>
+                <i class="fa fa-eye text-primary" v-on:click="showItemModal(key)"></i>
               </span>
             </li>
           </ul>
@@ -57,19 +25,37 @@
     </div>
     <br>
     <Add></Add>
+    <Show></Show>
   </div>
 </template>
 <script>
 var Add = require('./Add.vue');
+var Show = require('./Show.vue');
 export default {
   name: "",
   components: {
-    Add
+    Add,
+    Show
   },
   data() {
     return {
-
+      lists: []
     }
+  },
+  methods: {
+    showItemModal(key) {
+      this.$children[1].item = this.lists[key];
+      $("#showModal").modal('show');
+    }
+  },
+  created() {
+    //do something after creating vue instance
+    axios.post('/getData')
+      .then(response => {
+        this.lists = response.data;
+        console.log(this.lists);
+      });
+    // console.log("Vue instance created!");
   }
 }
 </script>
