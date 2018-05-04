@@ -1,6 +1,6 @@
 <template>
   <div id="">
-    <div class="row">
+    <div>
       <div class="col-md-6 offset-md-3">
         <div class="well" style="padding:20px 0px;">
           <strong>Vuejs Phonebook</strong>
@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-
+    <br>
     <Add></Add>
   </div>
 </template>

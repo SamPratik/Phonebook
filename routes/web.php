@@ -18,3 +18,5 @@ Route::get('/', function () {
 Route::get('/{name}', function() {
     return redirect('/');
 })->where('name', '[A-Za-z]+');
+
+Route::resource('/phonebooks', 'PhonebookController');

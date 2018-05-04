@@ -25295,7 +25295,6 @@ var About = __webpack_require__(62);
 var routes = [{ path: '/home', component: Home }, { path: '/about', component: About }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-  mode: 'history',
   routes: routes // short for `routes: routes`
 });
 
@@ -50718,6 +50717,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "",
@@ -50743,29 +50744,28 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "footer",
-      {
-        staticClass: "row",
-        staticStyle: { "background-color": "#ddd", padding: "40px" }
-      },
+      { staticStyle: { "background-color": "#ddd", padding: "40px" } },
       [
-        _c("p", { staticStyle: { margin: "0 auto" } }, [
-          _c("strong", [_vm._v("Vuejs Phonebook App")]),
-          _vm._v(" by "),
-          _c("span", { staticClass: "text-warning" }, [
-            _vm._v("Samiul Alim Pratik")
-          ]),
-          _vm._v(". Access the source code "),
-          _c(
-            "a",
-            {
-              staticClass: "text-warning",
-              attrs: {
-                target: "_blank",
-                href: "https://github.com/SamPratik/Phonebook"
-              }
-            },
-            [_vm._v("GitHub.com/SamPratik/Phonebook")]
-          )
+        _c("div", { staticClass: "row" }, [
+          _c("p", { staticStyle: { margin: "0 auto" } }, [
+            _c("strong", [_vm._v("Vuejs Phonebook App")]),
+            _vm._v(" by "),
+            _c("span", { staticClass: "text-warning" }, [
+              _vm._v("Samiul Alim Pratik")
+            ]),
+            _vm._v(". Access the source code "),
+            _c(
+              "a",
+              {
+                staticClass: "text-warning",
+                attrs: {
+                  target: "_blank",
+                  href: "https://github.com/SamPratik/Phonebook"
+                }
+              },
+              [_vm._v("GitHub.com/SamPratik/Phonebook")]
+            )
+          ])
         ])
       ]
     )
@@ -50961,7 +50961,7 @@ var render = function() {
   return _c(
     "div",
     { attrs: { id: "" } },
-    [_vm._m(0), _vm._v(" "), _c("Add")],
+    [_vm._m(0), _vm._v(" "), _c("br"), _vm._v(" "), _c("Add")],
     1
   )
 }
@@ -50970,7 +50970,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
+    return _c("div", [
       _c("div", { staticClass: "col-md-6 offset-md-3" }, [
         _c(
           "div",
@@ -51396,11 +51396,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "",
   data: function data() {
-    return {};
+    return {
+      list: {
+        name: '',
+        email: '',
+        phone: ''
+      }
+    };
+  },
+
+  methods: {
+    save: function save() {
+      // console.log(this.$data.list);
+      axios.post('phonebooks', this.$data.list).then(function (response) {
+        document.getElementById('addForm').reset();
+        $("#addModal").modal('hide');
+        console.log(response.data);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
   }
 });
 
@@ -51412,87 +51441,153 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { attrs: { id: "" } }, [
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("form", { attrs: { id: "addForm" } }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.list.name,
+                          expression: "list.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", id: "", placeholder: "Name" },
+                      domProps: { value: _vm.list.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.list, "name", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.list.phone,
+                          expression: "list.phone"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", id: "", placeholder: "Phone" },
+                      domProps: { value: _vm.list.phone },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.list, "phone", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.list.email,
+                          expression: "list.email"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "email", id: "", placeholder: "Email" },
+                      domProps: { value: _vm.list.email },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.list, "email", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: { click: _vm.save }
+                  },
+                  [_vm._v("Save")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "" } }, [
+    return _c("div", { staticClass: "modal-header" }, [
       _c(
-        "div",
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Modal title")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
         {
-          staticClass: "modal fade",
+          staticClass: "close",
           attrs: {
-            id: "addModal",
-            tabindex: "-1",
-            role: "dialog",
-            "aria-labelledby": "exampleModalLabel",
-            "aria-hidden": "true"
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
           }
         },
-        [
-          _c(
-            "div",
-            { staticClass: "modal-dialog", attrs: { role: "document" } },
-            [
-              _c("div", { staticClass: "modal-content" }, [
-                _c("div", { staticClass: "modal-header" }, [
-                  _c(
-                    "h5",
-                    {
-                      staticClass: "modal-title",
-                      attrs: { id: "exampleModalLabel" }
-                    },
-                    [_vm._v("Modal title")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close",
-                      attrs: {
-                        type: "button",
-                        "data-dismiss": "modal",
-                        "aria-label": "Close"
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("×")
-                      ])
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
-                  _vm._v("\n          ...\n        ")
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-footer" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-secondary",
-                      attrs: { type: "button", "data-dismiss": "modal" }
-                    },
-                    [_vm._v("Close")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: { type: "button" }
-                    },
-                    [_vm._v("Save changes")]
-                  )
-                ])
-              ])
-            ]
-          )
-        ]
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
     ])
   }
