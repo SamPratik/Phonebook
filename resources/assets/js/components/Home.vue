@@ -4,7 +4,7 @@
       <div class="col-md-6 offset-md-3">
         <div class="well" style="padding:20px 0px;">
           <strong>Vuejs Phonebook</strong>
-          <button class="btn btn-outline-success pull-right" type="button" name="button">Add New</button>
+          <button class="btn btn-outline-success pull-right" type="button" data-toggle="modal" data-target="#addModal">Add New</button>
         </div>
         <div class="form-group">
           <input type="text" class="form-control" id="" placeholder="Search here...">
@@ -55,11 +55,17 @@
         </div>
       </div>
     </div>
+
+    <Add></Add>
   </div>
 </template>
 <script>
+var Add = require('./Add.vue');
 export default {
   name: "",
+  components: {
+    Add
+  },
   data() {
     return {
 
