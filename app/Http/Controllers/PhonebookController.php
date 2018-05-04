@@ -90,7 +90,21 @@ class PhonebookController extends Controller
      */
     public function update(Request $request, Phonebook $phonebook)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:191',
+            'email' => 'required|email|unique:phonebooks,email,'.$request->id,
+            'phone' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+        $pb = Phonebook::find($request->id);
+        $pb->name = $request->name;
+        $pb->email = $request->email;
+        $pb->phone = $request->phone;
+        $pb->save();
+        return "success";
     }
 
     /**

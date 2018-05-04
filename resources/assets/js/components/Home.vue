@@ -15,7 +15,7 @@
               {{item.name}}
               <span class="pull-right">
                 <i style="margin-right:20px;" class="fa fa-trash text-danger" aria-hidden="true"></i>
-                <i style="margin-right:20px;" class="fa fa-edit text-warning"></i>
+                <i style="margin-right:20px;" class="fa fa-edit text-warning" v-on:click="editItemModal(key)"></i>
                 <i class="fa fa-eye text-primary" v-on:click="showItemModal(key)"></i>
               </span>
             </li>
@@ -26,16 +26,19 @@
     <br>
     <Add></Add>
     <Show></Show>
+    <Edit></Edit>
   </div>
 </template>
 <script>
 var Add = require('./Add.vue');
 var Show = require('./Show.vue');
+var Edit = require('./Edit.vue');
 export default {
   name: "",
   components: {
     Add,
-    Show
+    Show,
+    Edit
   },
   data() {
     return {
@@ -46,6 +49,10 @@ export default {
     showItemModal(key) {
       this.$children[1].item = this.lists[key];
       $("#showModal").modal('show');
+    },
+    editItemModal(key) {
+      $("#editModal").modal('show');
+      this.$children[2].list = this.lists[key];
     }
   },
   created() {
@@ -60,7 +67,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-i {
-  cursor: pointer;
-}
+  i {
+    cursor: pointer;
+  }
 </style>
