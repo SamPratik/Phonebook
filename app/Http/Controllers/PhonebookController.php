@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Phonebook as Phonebook;
 use Illuminate\Http\Request;
+use Validator;
 
 class PhonebookController extends Controller
 {
@@ -35,6 +36,16 @@ class PhonebookController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:191',
+            'email' => 'required|email|unique:phonebooks',
+            'phone' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
         $pb = new Phonebook;
         $pb->name = $request->name;
         $pb->email = $request->email;

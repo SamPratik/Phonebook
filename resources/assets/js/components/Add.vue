@@ -14,12 +14,15 @@
             <form id="addForm" class="">
               <div class="form-group">
                 <input v-model="list.name" type="text" class="form-control" id="" placeholder="Name">
+                <p class="text-danger" v-if="errors.name">{{ errors.name[0] }}</p>
               </div>
               <div class="form-group">
                 <input v-model="list.phone" type="text" class="form-control" id="" placeholder="Phone">
+                <p class="text-danger" v-if="errors.phone">{{ errors.phone[0] }}</p>
               </div>
               <div class="form-group">
                 <input v-model="list.email" type="email" class="form-control" id="" placeholder="Email">
+                <p class="text-danger" v-if="errors.email">{{ errors.email[0] }}</p>
               </div>
             </form>
           </div>
@@ -41,20 +44,22 @@ export default {
         name: '',
         email: '',
         phone: ''
-      }
+      },
+      errors: {}
     }
   },
   methods: {
     save() {
       // console.log(this.$data.list);
+      // to access 'this' you must need to use 'ES6' syntax function...
       axios.post('phonebooks', this.$data.list)
-      .then(function(response) {
+      .then(response => {
         document.getElementById('addForm').reset();
-        $("#addModal").modal('hide');
+        if(response.data == "success") {
+          $("#addModal").modal('hide');
+        }
+        this.errors = response.data;
         console.log(response.data);
-      })
-      .catch(function(error) {
-        console.log(error);
       });
     }
   }
