@@ -51125,7 +51125,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           console.log(response.data);
         } else {
           $("#addModal").modal('hide');
-          console.log(_this.$parent.lists.push(response.data));
+          _this.$parent.lists.push(response.data);
+          _this.$parent.lists.sort(function (a, b) {
+            if (a.name > b.name) {
+              return 1;
+            } else if (a.name < b.name) {
+              return -1;
+            }
+          });
         }
       });
     }

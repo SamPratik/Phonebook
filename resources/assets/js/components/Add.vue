@@ -60,7 +60,14 @@ export default {
           console.log(response.data);
         } else {
           $("#addModal").modal('hide');
-          console.log(this.$parent.lists.push(response.data));
+          this.$parent.lists.push(response.data);
+          this.$parent.lists.sort(function(a,b){
+            if(a.name > b.name) {
+              return 1;
+            } else if (a.name < b.name) {
+              return -1;
+            }
+          })
         }
       });
     }
