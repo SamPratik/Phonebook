@@ -51120,11 +51120,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       // to access 'this' you must need to use 'ES6' syntax function...
       axios.post('phonebooks', this.$data.list).then(function (response) {
         document.getElementById('addForm').reset();
-        if (response.data == "success") {
+        if (typeof response.data.error != 'undefined') {
+          _this.errors = response.data;
+          console.log(response.data);
+        } else {
           $("#addModal").modal('hide');
+          console.log(_this.$parent.lists.push(response.data));
         }
-        _this.errors = response.data;
-        console.log(response.data);
       });
     }
   }

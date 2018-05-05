@@ -55,11 +55,13 @@ export default {
       axios.post('phonebooks', this.$data.list)
       .then(response => {
         document.getElementById('addForm').reset();
-        if(response.data == "success") {
+        if(typeof response.data.error != 'undefined') {
+          this.errors = response.data;
+          console.log(response.data);
+        } else {
           $("#addModal").modal('hide');
+          console.log(this.$parent.lists.push(response.data));
         }
-        this.errors = response.data;
-        console.log(response.data);
       });
     }
   }

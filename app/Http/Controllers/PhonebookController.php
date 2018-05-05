@@ -48,6 +48,7 @@ class PhonebookController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $validator->errors()->add('error', 'true');
             return response()->json($validator->errors());
         }
 
@@ -56,7 +57,7 @@ class PhonebookController extends Controller
         $pb->email = $request->email;
         $pb->phone = $request->phone;
         $pb->save();
-        return "success";
+        return $pb;
     }
 
     /**
