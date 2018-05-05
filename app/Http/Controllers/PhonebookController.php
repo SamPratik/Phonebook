@@ -115,6 +115,8 @@ class PhonebookController extends Controller
      */
     public function destroy(Phonebook $phonebook)
     {
-        //
+        $phonebook = Phonebook::find($phonebook->id);
+        $phonebook->delete();
+        return "success";
     }
 }

@@ -50908,6 +50908,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 var Add = __webpack_require__(61);
 var Show = __webpack_require__(66);
@@ -50921,7 +50922,8 @@ var Edit = __webpack_require__(71);
   },
   data: function data() {
     return {
-      lists: []
+      lists: [],
+      loading: false
     };
   },
 
@@ -50933,15 +50935,30 @@ var Edit = __webpack_require__(71);
     editItemModal: function editItemModal(key) {
       $("#editModal").modal('show');
       this.$children[2].list = this.lists[key];
+    },
+    delItem: function delItem(key, itemID) {
+      var _this = this;
+
+      var c = confirm('Are you sure, you want to delete this item?');
+      if (c == true) {
+        this.loading = !this.loading;
+        axios.delete('/phonebooks/' + itemID).then(function (response) {
+          if (response.data == "success") {
+            _this.loading = !_this.loading;
+            _this.lists.splice(key, 1);
+          }
+        });
+        // console.log(`${key} ${itemID}`);
+      }
     }
   },
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
     //do something after creating vue instance
     axios.post('/getData').then(function (response) {
-      _this.lists = response.data;
-      console.log(_this.lists);
+      _this2.lists = response.data;
+      console.log(_this2.lists);
     });
     // console.log("Vue instance created!");
   }
@@ -51916,9 +51933,35 @@ var render = function() {
     [
       _c("div", [
         _c("div", { staticClass: "col-md-6 offset-md-3" }, [
-          _vm._m(0),
+          _c(
+            "div",
+            { staticClass: "well", staticStyle: { padding: "20px 0px" } },
+            [
+              _c("strong", [_vm._v("Vuejs Phonebook")]),
+              _vm._v(" "),
+              _vm.loading
+                ? _c("i", {
+                    staticClass: "fa fa-refresh fa-spin",
+                    staticStyle: { "margin-left": "10px", "font-size": "20px" }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-success pull-right",
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#addModal"
+                  }
+                },
+                [_vm._v("Add New")]
+              )
+            ]
+          ),
           _vm._v(" "),
-          _vm._m(1),
+          _vm._m(0),
           _vm._v(" "),
           _c("div", {}, [
             _c(
@@ -51933,7 +51976,12 @@ var render = function() {
                     _c("i", {
                       staticClass: "fa fa-trash text-danger",
                       staticStyle: { "margin-right": "20px" },
-                      attrs: { "aria-hidden": "true" }
+                      attrs: { "aria-hidden": "true" },
+                      on: {
+                        click: function($event) {
+                          _vm.delItem(key, item.id)
+                        }
+                      }
                     }),
                     _vm._v(" "),
                     _c("i", {
@@ -51974,31 +52022,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "well", staticStyle: { padding: "20px 0px" } },
-      [
-        _c("strong", [_vm._v("Vuejs Phonebook")]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-success pull-right",
-            attrs: {
-              type: "button",
-              "data-toggle": "modal",
-              "data-target": "#addModal"
-            }
-          },
-          [_vm._v("Add New")]
-        )
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
