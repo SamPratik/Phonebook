@@ -50940,12 +50940,12 @@ var Edit = __webpack_require__(71);
   },
   methods: {
     showItemModal: function showItemModal(key) {
-      this.$children[1].item = this.lists[key];
+      this.$children[1].item = this.filteredLists[key];
       $("#showModal").modal('show');
     },
     editItemModal: function editItemModal(key) {
       $("#editModal").modal('show');
-      this.$children[2].list = this.lists[key];
+      this.$children[2].list = this.filteredLists[key];
     },
     delItem: function delItem(key, itemID) {
       var _this2 = this;
@@ -50956,7 +50956,13 @@ var Edit = __webpack_require__(71);
         axios.delete('/phonebooks/' + itemID).then(function (response) {
           if (response.data == "success") {
             _this2.loading = !_this2.loading;
-            _this2.lists.splice(key, 1);
+            for (var i = 0; i < _this2.lists.length; i++) {
+              if (_this2.filteredLists[key].id == _this2.lists[i].id) {
+                _this2.lists.splice(i, 1);
+                break;
+              }
+            }
+            _this2.filteredLists.splice(key, 1);
           }
         });
         // console.log(`${key} ${itemID}`);

@@ -58,12 +58,12 @@ export default {
   },
   methods: {
     showItemModal(key) {
-      this.$children[1].item = this.lists[key];
+      this.$children[1].item = this.filteredLists[key];
       $("#showModal").modal('show');
     },
     editItemModal(key) {
       $("#editModal").modal('show');
-      this.$children[2].list = this.lists[key];
+      this.$children[2].list = this.filteredLists[key];
     },
     delItem(key, itemID) {
       var c = confirm('Are you sure, you want to delete this item?');
@@ -73,7 +73,13 @@ export default {
           .then(response => {
             if(response.data == "success") {
               this.loading = !this.loading;
-              this.lists.splice(key, 1);
+              for(let i=0; i<this.lists.length; i++) {
+                if(this.filteredLists[key].id == this.lists[i].id) {
+                  this.lists.splice(i,1);
+                  break;
+                }
+              }
+              this.filteredLists.splice(key, 1);
             }
           });
         // console.log(`${key} ${itemID}`);
