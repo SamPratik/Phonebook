@@ -50923,10 +50923,21 @@ var Edit = __webpack_require__(71);
   data: function data() {
     return {
       lists: [],
-      loading: false
+      loading: false,
+      searchTerm: '',
+      filteredLists: []
     };
   },
 
+  watch: {
+    searchTerm: function searchTerm() {
+      var _this = this;
+
+      this.filteredLists = this.lists.filter(function (item) {
+        return item.name.toLowerCase().indexOf(_this.searchTerm.toLowerCase()) > -1;
+      });
+    }
+  },
   methods: {
     showItemModal: function showItemModal(key) {
       this.$children[1].item = this.lists[key];
@@ -50937,15 +50948,15 @@ var Edit = __webpack_require__(71);
       this.$children[2].list = this.lists[key];
     },
     delItem: function delItem(key, itemID) {
-      var _this = this;
+      var _this2 = this;
 
       var c = confirm('Are you sure, you want to delete this item?');
       if (c == true) {
         this.loading = !this.loading;
         axios.delete('/phonebooks/' + itemID).then(function (response) {
           if (response.data == "success") {
-            _this.loading = !_this.loading;
-            _this.lists.splice(key, 1);
+            _this2.loading = !_this2.loading;
+            _this2.lists.splice(key, 1);
           }
         });
         // console.log(`${key} ${itemID}`);
@@ -50953,12 +50964,12 @@ var Edit = __webpack_require__(71);
     }
   },
   created: function created() {
-    var _this2 = this;
+    var _this3 = this;
 
     //do something after creating vue instance
     axios.post('/getData').then(function (response) {
-      _this2.lists = response.data;
-      console.log(_this2.lists);
+      _this3.lists = _this3.filteredLists = response.data;
+      console.log(_this3.lists);
     });
     // console.log("Vue instance created!");
   }
@@ -51970,13 +51981,35 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.searchTerm,
+                  expression: "searchTerm"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "", placeholder: "Search here..." },
+              domProps: { value: _vm.searchTerm },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.searchTerm = $event.target.value
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
           _c("div", {}, [
             _c(
               "ul",
               { staticClass: "list-group" },
-              _vm._l(_vm.lists, function(item, key) {
+              _vm._l(_vm.filteredLists, function(item, key) {
                 return _c("li", { staticClass: "list-group-item" }, [
                   _vm._v(
                     "\n            " + _vm._s(item.name) + "\n            "
@@ -52030,19 +52063,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", id: "", placeholder: "Search here..." }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

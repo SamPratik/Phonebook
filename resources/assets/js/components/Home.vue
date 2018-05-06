@@ -8,11 +8,11 @@
           <button class="btn btn-outline-success pull-right" type="button" data-toggle="modal" data-target="#addModal">Add New</button>
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" id="" placeholder="Search here...">
+          <input v-model="searchTerm" type="text" class="form-control" id="" placeholder="Search here...">
         </div>
         <div class="">
           <ul class="list-group">
-            <li class="list-group-item" v-for="item, key in lists">
+            <li class="list-group-item" v-for="item, key in filteredLists">
               {{item.name}}
               <span class="pull-right">
                 <i style="margin-right:20px;" class="fa fa-trash text-danger" aria-hidden="true"  v-on:click="delItem(key, item.id)"></i>
@@ -44,7 +44,16 @@ export default {
   data() {
     return {
       lists: [],
-      loading: false
+      loading: false,
+      searchTerm: '',
+      filteredLists: []
+    }
+  },
+  watch: {
+    searchTerm: function() {
+      this.filteredLists = this.lists.filter(item => {
+        return item.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
+      });
     }
   },
   methods: {
@@ -75,7 +84,7 @@ export default {
     //do something after creating vue instance
     axios.post('/getData')
       .then(response => {
-        this.lists = response.data;
+        this.lists = this.filteredLists = response.data;
         console.log(this.lists);
       });
     // console.log("Vue instance created!");
